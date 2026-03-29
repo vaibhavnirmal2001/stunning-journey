@@ -255,6 +255,100 @@ function ActionButton({ href, label, icon, className = "" }) {
   );
 }
 
+function useTypewriter(phrases, reducedMotion) {
+  const [phraseIndex, setPhraseIndex] = useState(0);
+  const [displayText, setDisplayText] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    if (!phrases.length) {
+      return undefined;
+    }
+
+    if (reducedMotion) {
+      setDisplayText(phrases[phraseIndex]);
+      return undefined;
+    }
+
+    const currentPhrase = phrases[phraseIndex];
+    const finishedTyping = !isDeleting && displayText === currentPhrase;
+    const finishedDeleting = isDeleting && displayText === "";
+
+    const timeout = window.setTimeout(
+      () => {
+        if (finishedTyping) {
+          setIsDeleting(true);
+          return;
+        }
+
+        if (finishedDeleting) {
+          setIsDeleting(false);
+          setPhraseIndex((value) => (value + 1) % phrases.length);
+          return;
+        }
+
+        setDisplayText((value) =>
+          isDeleting ? currentPhrase.slice(0, Math.max(0, value.length - 1)) : currentPhrase.slice(0, value.length + 1)
+        );
+      },
+      finishedTyping ? 1700 : finishedDeleting ? 240 : isDeleting ? 30 : 54
+    );
+
+    return () => window.clearTimeout(timeout);
+  }, [displayText, isDeleting, phraseIndex, phrases, reducedMotion]);
+
+  return displayText;
+}
+
+function TypewriterHeadline({ phrases, reducedMotion }) {
+  const typedText = useTypewriter(phrases, reducedMotion);
+  const longestPhrase = phrases.reduce(
+    (longest, current) => (current.length > longest.length ? current : longest),
+    phrases[0] ?? ""
+  );
+
+  return (
+    <span aria-live="polite" className="typewriter-shell">
+      <span aria-hidden="true" className="typewriter-sizer">
+        {longestPhrase}
+      </span>
+      <span className="typewriter-live">
+        {typedText}
+        <span aria-hidden="true" className="typewriter-caret" />
+      </span>
+    </span>
+  );
+}
+
+function AstralCrown() {
+  return (
+    <div aria-hidden="true" className="astral-crown">
+      <div className="astral-veil" />
+      <div className="astral-lens">
+        <div className="astral-core" />
+        <div className="astral-core-ring ring-a" />
+        <div className="astral-core-ring ring-b" />
+        <div className="astral-core-ring ring-c" />
+        <div className="astral-flare flare-a" />
+        <div className="astral-flare flare-b" />
+      </div>
+      <div className="astral-arc arc-a" />
+      <div className="astral-arc arc-b" />
+      <div className="astral-arc arc-c" />
+      <div className="astral-comet comet-a" />
+      <div className="astral-comet comet-b" />
+      <div className="astral-starfield">
+        <span className="astral-star s1" />
+        <span className="astral-star s2" />
+        <span className="astral-star s3" />
+        <span className="astral-star s4" />
+        <span className="astral-star s5" />
+        <span className="astral-star s6" />
+      </div>
+    </div>
+  );
+}
+
 function ParticleField() {
   const canvasRef = useRef(null);
   const reducedMotion = useReducedMotion();
@@ -397,11 +491,11 @@ function ParticleField() {
 }
 
 export default function App() {
-  const [focusIndex, setFocusIndex] = useState(0);
   const [signalIndex, setSignalIndex] = useState(0);
   const [activeSection, setActiveSection] = useState(portfolioData.nav[0].id);
   const reducedMotion = useReducedMotion();
   const progressRef = useRef(null);
+  const heroPhrases = portfolioData.hero.focusWords.map((word) => `Crafting ${word} for modern Java products.`);
 
   useEffect(() => {
     if (reducedMotion) {
@@ -409,9 +503,8 @@ export default function App() {
     }
 
     const updateSignals = window.setInterval(() => {
-      setFocusIndex((value) => (value + 1) % portfolioData.hero.focusWords.length);
       setSignalIndex((value) => (value + 1) % portfolioData.hero.runtimeSignals.length);
-    }, 2200);
+    }, 4200);
 
     return () => window.clearInterval(updateSignals);
   }, [reducedMotion]);
@@ -501,10 +594,13 @@ export default function App() {
       <div className="cursor-glow" />
       <div className="noise-overlay" />
       <div className="progress-bar" ref={progressRef} />
+      <AstralCrown />
 
       <header className="site-header">
         <a className="brand" href="#top">
-          <span className="brand-mark">VN</span>
+          <span className="brand-mark">
+            <img alt="Vaibhav Nirmal" src={portfolioData.identity.profileImage} />
+          </span>
           <span className="brand-copy">
             <strong>{portfolioData.identity.name}</strong>
             <small>{portfolioData.identity.role}</small>
@@ -525,14 +621,23 @@ export default function App() {
       <main id="top">
         <Reveal as="section" className="hero section-shell">
           <div className="hero-copy">
+            <div className="hero-persona">
+              <span className="hero-avatar">
+                <img alt="Vaibhav Nirmal" src={portfolioData.identity.profileImage} />
+              </span>
+              <div className="hero-persona-copy">
+                <strong>{portfolioData.identity.name}</strong>
+                <span>{portfolioData.identity.role}</span>
+              </div>
+            </div>
+
             <div className="eyebrow">
               <span className="pulse-dot" />
               {portfolioData.hero.eyebrow}
             </div>
             <p className="hero-tag">{portfolioData.identity.tagline}</p>
             <h1>
-              Crafting <span>{portfolioData.hero.focusWords[focusIndex]}</span> for modern Java
-              products.
+              <TypewriterHeadline phrases={heroPhrases} reducedMotion={reducedMotion} />
             </h1>
             <p className="hero-intro">{portfolioData.hero.intro}</p>
             <p className="hero-summary">{portfolioData.hero.summary}</p>
@@ -558,16 +663,38 @@ export default function App() {
           </div>
 
           <div className="hero-stage">
-            <div aria-hidden="true" className="orbit-shell">
-              <div className="ring ring-one" />
-              <div className="ring ring-two" />
-              <div className="ring ring-three" />
-              {portfolioData.hero.badges.map((badge, index) => (
-                <span className={`orbit-chip chip-${index + 1}`} key={badge}>
-                  {badge}
-                </span>
-              ))}
-            </div>
+            <MotionCard as="article" className="astro-panel">
+              <div className="astro-top">
+                <span className="astro-kicker">Celestial Stack Map</span>
+                <span className="astro-phase">North Node: Spring Boot x Angular</span>
+              </div>
+
+              <div aria-hidden="true" className="orbit-shell">
+                <div className="ring ring-one" />
+                <div className="ring ring-two" />
+                <div className="ring ring-three" />
+                <div className="star star-a" />
+                <div className="star star-b" />
+                <div className="star star-c" />
+                <div className="star star-d" />
+                {portfolioData.hero.badges.map((badge, index) => (
+                  <span className={`orbit-chip chip-${index + 1}`} key={badge}>
+                    {badge}
+                  </span>
+                ))}
+              </div>
+
+              <div className="astro-footer">
+                <div className="astro-note">
+                  <span>Transit</span>
+                  <strong>Backend gravity with frontend harmony</strong>
+                </div>
+                <div className="astro-note">
+                  <span>Constellation</span>
+                  <strong>Kafka, Redis, Docker, Kubernetes, GCP</strong>
+                </div>
+              </div>
+            </MotionCard>
 
             <MotionCard as="article" className="command-panel">
               <div className="panel-top">

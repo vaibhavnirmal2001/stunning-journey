@@ -3,6 +3,7 @@ export const portfolioData = {
     name: "Vaibhav Nirmal",
     role: "Java Full Stack Engineer",
     tagline: "A passionate Java full stack engineer. Let's connect and cook!",
+    profileImage: "/assets/vn-profile.png",
     location: "Pune, India",
     availability: "Open to Relocation",
     email: "vaibhavnirmal2001@gmail.com",
