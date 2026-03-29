@@ -1,9 +1,11 @@
+import profileImage from "../assets/vn-profile.png";
+
 export const portfolioData = {
   identity: {
     name: "Vaibhav Nirmal",
     role: "Java Full Stack Engineer",
     tagline: "A passionate Java full stack engineer. Let's connect and cook!",
-    profileImage: "/assets/vn-profile.png",
+    profileImage,
     location: "Pune, India",
     availability: "Open to Relocation",
     email: "vaibhavnirmal2001@gmail.com",
