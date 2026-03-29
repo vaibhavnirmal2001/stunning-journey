@@ -7,7 +7,6 @@ export const portfolioData = {
     tagline: "A passionate Java full stack engineer. Let's connect and cook!",
     profileImage,
     location: "Pune, India",
-    availability: "Open to Relocation",
     email: "vaibhavnirmal2001@gmail.com",
     phone: "+91 9511727791",
     company: "Blue Altair India Ltd",
@@ -214,7 +213,7 @@ export const portfolioData = {
     {
       title: "1st Place at Siemens Energy Germany Hackathon",
       copy:
-        "Won first place among 45 teams in a 48-hour challenge, contributing to Blue Altair's selection as an enterprise vendor for upcoming projects.",
+        "Won first place among 45 teams in a 48-hour challenge by building a solution strong enough to stand out in a highly competitive environment.",
     },
     {
       title: "Technical Leadership and Reviews",
@@ -225,7 +224,7 @@ export const portfolioData = {
   contact: {
     title: "Let's build reliable systems and polished products.",
     body:
-      "I am a Java Full Stack Engineer based in Pune, open to relocation, and interested in backend-heavy or full stack roles where distributed systems, product thinking, and production quality matter.",
+      "I am a Java Full Stack Engineer based in Pune and interested in backend-heavy or full stack roles where distributed systems, product thinking, and production quality matter.",
     email: "vaibhavnirmal2001@gmail.com",
     phone: "+91 9511727791",
     linkedin: "https://www.linkedin.com/in/vaibhavnirmal2001/",

@@ -751,9 +751,7 @@ export default function App() {
                 </div>
                 <div className="status-cell">
                   <span>Location</span>
-                  <strong>
-                    {portfolioData.identity.location} | {portfolioData.identity.availability}
-                  </strong>
+                  <strong>{portfolioData.identity.location}</strong>
                 </div>
                 <div className="status-cell status-wide">
                   <span>Certification</span>
@@ -923,7 +921,6 @@ export default function App() {
             </div>
             <div className="contact-meta">
               <span>{portfolioData.identity.location}</span>
-              <span>{portfolioData.identity.availability}</span>
               <span>{portfolioData.identity.experience}</span>
             </div>
           </MotionCard>
