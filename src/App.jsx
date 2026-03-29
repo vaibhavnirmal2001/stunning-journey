@@ -324,6 +324,20 @@ function AstralCrown() {
   return (
     <div aria-hidden="true" className="astral-crown">
       <div className="astral-veil" />
+      <div className="astral-observatory observatory-left">
+        <span className="observatory-ring" />
+        <span className="observatory-ring observatory-ring-small" />
+        <span className="observatory-axis axis-a" />
+        <span className="observatory-axis axis-b" />
+        <span className="observatory-beacon" />
+      </div>
+      <div className="astral-observatory observatory-right">
+        <span className="observatory-ring" />
+        <span className="observatory-ring observatory-ring-small" />
+        <span className="observatory-axis axis-a" />
+        <span className="observatory-axis axis-b" />
+        <span className="observatory-beacon" />
+      </div>
       <div className="astral-lens">
         <div className="astral-core" />
         <div className="astral-core-ring ring-a" />
